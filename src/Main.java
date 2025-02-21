@@ -8,7 +8,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        try (var lines = Files.lines(Path.of("/home/itamar/projects/1brc/measurements.txt"))) {
+        try (var lines = Files.lines(Path.of("./measurements.txt"))) {
             var reports = lines.parallel()
                                .map(stationReport -> {
                                    int delimiterIndex = stationReport.indexOf(";");
