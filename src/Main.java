@@ -10,11 +10,14 @@ public class Main {
     public static void main(String[] args) throws IOException {
         try (var lines = Files.lines(Path.of("/home/itamar/projects/1brc/measurements.txt"))) {
             var reports = lines.parallel()
-                               .map(stationReport -> new Pair<>(stationReport.substring(0,
-                                       stationReport.indexOf(";")),
-                                       Double.parseDouble(
-                                               stationReport.substring(
-                                                       stationReport.indexOf(";") + 1))))
+                               .map(stationReport -> {
+                                   int delimiterIndex = stationReport.indexOf(";");
+                                   return new Pair<>(stationReport.substring(0,
+                                           delimiterIndex),
+                                           Double.parseDouble(
+                                                   stationReport.substring(
+                                                           delimiterIndex + 1)));
+                               })
                                .collect(Collectors.groupingByConcurrent(Pair::first,
                                        Collectors.summarizingDouble(Pair::second)));
             var messages = reports.entrySet()
